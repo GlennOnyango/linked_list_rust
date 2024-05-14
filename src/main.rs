@@ -1,11 +1,19 @@
+use std::fmt::Debug;
+
 #[derive(Debug, Clone)]
-struct List<T> {
+struct List<T>
+where
+    T: Debug,
+{
     data: T,
     node: Option<Box<List<T>>>,
 }
 
-impl<T> List<T> {
-    pub fn add_last_node(&mut self, last_data:T) -> &mut List<T> {
+impl<T> List<T>
+where
+    T: Debug,
+{
+    pub fn add_last_node(&mut self, last_data: T) -> &mut List<T> {
         let mut shadow_node = &mut self.node;
 
         while shadow_node.is_some() {
@@ -40,7 +48,19 @@ impl<T> List<T> {
         }
     }
 
-    // pub fn visit_nodes() {}
+    pub fn visit_nodes(self) {
+        let mut shadow_node = &self.node;
+
+        while shadow_node.is_some() {
+            match shadow_node {
+                None => println!("The end"),
+                Some(i) => {
+                    println!("Data is {:?}", i.data);
+                    shadow_node = &i.node
+                }
+            }
+        }
+    }
 }
 
 fn main() {
@@ -59,4 +79,6 @@ fn main() {
     let my_list = my_list.add_last_node("Sherline");
 
     println!("Add node on last empty node {:#?}", my_list);
+
+    my_list.clone().visit_nodes();
 }
