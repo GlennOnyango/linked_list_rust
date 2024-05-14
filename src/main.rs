@@ -1,11 +1,11 @@
 #[derive(Debug, Clone)]
-struct List {
-    data: i32,
-    node: Option<Box<List>>,
+struct List<T> {
+    data: T,
+    node: Option<Box<List<T>>>,
 }
 
-impl List {
-    pub fn add_last_node(&mut self, last_data: i32) -> &mut List {
+impl<T> List<T> {
+    pub fn add_last_node(&mut self, last_data:T) -> &mut List<T> {
         let mut shadow_node = &mut self.node;
 
         while shadow_node.is_some() {
@@ -33,10 +33,10 @@ impl List {
         self
     }
 
-    pub fn add_first_node(&self, int_data: i32) -> Self {
+    pub fn add_first_node(self, int_data: T) -> Self {
         Self {
             data: int_data,
-            node: Some(Box::new(self.clone())),
+            node: Some(Box::new(self)),
         }
     }
 
@@ -45,18 +45,18 @@ impl List {
 
 fn main() {
     let mut my_list = List {
-        data: 1,
+        data: "Glenn",
         node: Some(Box::new(List {
-            data: 2,
+            data: "Vaud",
             node: None,
         })),
     };
 
-    let mut my_list = my_list.add_first_node(3);
+    let mut my_list = my_list.add_first_node("Val");
 
     println!("Add a node before list -> {:#?}", my_list);
 
-    let my_list = my_list.add_last_node(4);
+    let my_list = my_list.add_last_node("Sherline");
 
     println!("Add node on last empty node {:#?}", my_list);
 }
